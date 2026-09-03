@@ -1,0 +1,88 @@
+﻿.apply-page {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 35px 25px;
+}
+
+
+/* Header */
+
+.apply-header {
+    margin-bottom: 25px;
+}
+
+    .apply-header h2 {
+        margin: 0;
+        font-size: 30px;
+        font-weight: 600;
+    }
+
+    .apply-header p {
+        margin: 6px 0 0;
+        color: #6c757d;
+    }
+
+
+/* Form Card */
+
+.form-card {
+    background: white;
+    border: 1px solid #e2e5e9;
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+}
+
+
+/* Form fields */
+
+.form-group {
+    margin-bottom: 22px;
+}
+
+    .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-size: 14px;
+        font-weight: 600;
+        color: #343a40;
+    }
+
+
+/* Dates */
+
+.date-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+
+/* Buttons */
+
+.form-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+}
+
+
+/* Mobile */
+
+@media (max-width: 650px) {
+
+    .apply-page {
+        padding: 20px 15px;
+    }
+
+    .form-card {
+        padding: 20px;
+    }
+
+    .date-row {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+}

@@ -1,0 +1,162 @@
+﻿@page "/leaves"
+@rendermode InteractiveServer
+
+@inject NavigationManager NavigationManager
+@inject LeaveService LeaveService
+
+<div class="leaves-page">
+
+    <!-- Page Header -->
+    <div class="page-header">
+
+        <div>
+            <h2>Leave Requests</h2>
+            <p>View and manage employee leave requests</p>
+        </div>
+
+        <SfButton CssClass="e-primary"
+                  @onclick="ApplyLeave">
+            + Apply for Leave
+        </SfButton>
+
+    </div>
+
+
+    <!-- Status Filter -->
+    <div class="filter-section">
+
+        <div class="filter-group">
+
+            <label>Status</label>
+
+            <SfDropDownList TValue="string"
+                            TItem="string"
+                            DataSource="@statusOptions"
+                            @bind-Value="selectedStatus"
+                            Placeholder="Select status">
+            </SfDropDownList>
+
+        </div>
+
+        <SfButton CssClass="e-primary"
+                  @onclick="ApplyFilter">
+            Filter
+        </SfButton>
+
+        <SfButton CssClass="e-flat"
+                  @onclick="ClearFilter">
+            Clear
+        </SfButton>
+
+    </div>
+
+
+    @if (leaves == null)
+    {
+        <div class="loading">
+            Loading leave requests...
+        </div>
+    }
+    else if (leaves.Count == 0)
+    {
+        <div class="empty-state">
+            <h4>No Leave Requests</h4>
+            <p>There are currently no leave requests.</p>
+        </div>
+    }
+    else
+    {
+        <div class="leave-grid">
+
+            @foreach (var leave in leaves)
+            {
+                <LeaveCard Leave="leave"
+                           OnView="ViewDetails"
+                           OnStatusChange="status =>
+                           HandleStatusChange(leave.Id, status)" />
+            }
+
+        </div>
+    }
+
+</div>
+
+
+@code
+{
+    private List<LeaveRequest>? leaves;
+
+    private List<string> statusOptions = new()
+    {
+        "Pending",
+        "Approved",
+        "Rejected"
+    };
+
+    private string? selectedStatus;
+
+
+    // Gets ?status=... from the URL
+    [SupplyParameterFromQuery(Name = "status")]
+    public string? Status { get; set; }
+
+
+    protected override async Task OnParametersSetAsync()
+    {
+        var allLeaves = await LeaveService.GetAllAsync();
+
+        selectedStatus = Status;
+
+        if (string.IsNullOrEmpty(Status))
+        {
+            leaves = allLeaves;
+        }
+        else
+        {
+            leaves = allLeaves
+                .Where(x => x.Status == Status)
+                .ToList();
+        }
+    }
+
+
+    private void ApplyFilter()
+    {
+        if (string.IsNullOrEmpty(selectedStatus))
+        {
+            NavigationManager.NavigateTo("/leaves");
+        }
+        else
+        {
+            NavigationManager.NavigateTo(
+                $"/leaves?status={Uri.EscapeDataString(selectedStatus)}");
+        }
+    }
+
+
+    private void ClearFilter()
+    {
+        NavigationManager.NavigateTo("/leaves");
+    }
+
+
+    private void ViewDetails(int id)
+    {
+        NavigationManager.NavigateTo($"/leaves/{id}");
+    }
+
+
+    private async Task HandleStatusChange(int id, string status)
+    {
+        await LeaveService.UpdateStatusAsync(id, status);
+
+        // Reload data while preserving current filter
+        await OnParametersSetAsync();
+    }
+
+
+    private void ApplyLeave()
+    {
+        NavigationManager.NavigateTo("/leaves/create");
+    }
+}

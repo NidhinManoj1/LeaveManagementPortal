@@ -1,0 +1,74 @@
+﻿@page "/leaves/{id:int}"
+
+@inject LeaveService LeaveService
+
+<h3>Leave Details</h3>
+
+@if (leave == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <div class="e-card" style="max-width: 700px;">
+        <div class="e-card-header">
+            <div class="e-card-header-caption">
+                <div class="e-card-title">@leave.EmployeeName</div>
+            </div>
+        </div>
+
+        <div class="e-card-content">
+
+            <SfGrid DataSource="@leaveDetails">
+                <GridColumns>
+
+                    <GridColumn Field="@nameof(LeaveDetail.Label)"
+                                HeaderText="Field"
+                                Width="200">
+                    </GridColumn>
+
+                    <GridColumn Field="@nameof(LeaveDetail.Value)"
+                                HeaderText="Details"
+                                Width="300">
+                    </GridColumn>
+
+                </GridColumns>
+            </SfGrid>
+
+        </div>
+    </div>
+}
+
+@code
+{
+    [Parameter]
+    public int id { get; set; }
+
+    private LeaveRequest? leave;
+
+    private List<LeaveDetail> leaveDetails = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        leave = await LeaveService.GetByIdAsync(id);
+
+        if (leave != null)
+        {
+            leaveDetails = new List<LeaveDetail>
+            {
+                new() { Label = "Leave Type", Value = leave.LeaveType },
+                new() { Label = "Start Date", Value = leave.StartDate?.ToShortDateString() ?? "" },
+                new() { Label = "End Date", Value = leave.EndDate?.ToShortDateString() ?? ""},
+                new() { Label = "Reason", Value = leave.Reason },
+                new() { Label = "Status", Value = leave.Status },
+                new() { Label = "Created Date", Value = leave.CreatedDate.ToShortDateString() }
+            };
+        }
+    }
+
+    public class LeaveDetail
+    {
+        public string Label { get; set; } = "";
+        public string Value { get; set; } = "";
+    }
+}

@@ -1,0 +1,157 @@
+﻿@page "/leaves/create"
+@rendermode InteractiveServer
+
+@inject LeaveService LeaveService
+@inject NavigationManager NavigationManager
+
+
+<div class="apply-page">
+
+    <div class="apply-header">
+        <h2>Apply for Leave</h2>
+        <p>Submit a new leave request</p>
+    </div>
+
+
+    <div class="form-card">
+
+        <EditForm Model="@leave"
+                  OnValidSubmit="@HandleSubmit">
+
+            <DataAnnotationsValidator />
+
+            <ValidationSummary />
+
+
+            <!-- Employee Name -->
+
+            <div class="form-group">
+
+                <label>Employee Name</label>
+
+                <SfTextBox @bind-Value="leave.EmployeeName"
+                           Placeholder="Enter employee name">
+                </SfTextBox>
+
+            </div>
+
+
+            <!-- Leave Type -->
+
+            <div class="form-group">
+
+                <label>Leave Type</label>
+
+                <SfDropDownList TValue="string"
+                                TItem="string"
+                                DataSource="@leaveTypes"
+                                @bind-Value="leave.LeaveType"
+                                Placeholder="Select leave type">
+                </SfDropDownList>
+
+            </div>
+
+
+            <!-- Dates -->
+
+            <div class="date-row">
+
+                <div class="form-group">
+
+                    <label>Start Date</label>
+
+                    <SfDatePicker TValue="DateTime?"
+                                  @bind-Value="leave.StartDate"
+                                  Placeholder="Select start date"
+                                  Format="dd/MM/yyyy">
+                    </SfDatePicker>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>End Date</label>
+
+                    <SfDatePicker TValue="DateTime?"
+                                  @bind-Value="leave.EndDate"
+                                  Placeholder="Select end date"
+                                  Format="dd/MM/yyyy">
+                    </SfDatePicker>
+
+                </div>
+
+            </div>
+
+
+            <!-- Reason -->
+
+            <div class="form-group">
+
+                <label>Reason</label>
+
+                <SfTextArea @bind-Value="leave.Reason"
+                            Placeholder="Enter reason for leave"
+                            Rows="5">
+                </SfTextArea>
+
+            </div>
+
+
+            <!-- Buttons -->
+
+            <div class="form-actions">
+
+                <SfButton CssClass="e-primary"
+                          Type="Submit">
+
+                    Submit Leave
+
+                </SfButton>
+
+
+                <SfButton CssClass="e-flat"
+                          Type="Button"
+                          OnClick="@Cancel">
+
+                    Cancel
+
+                </SfButton>
+
+            </div>
+
+        </EditForm>
+
+    </div>
+
+</div>
+
+
+@code
+{
+    private LeaveRequest leave = new();
+
+
+    private List<string> leaveTypes = new()
+    {
+        "Casual Leave",
+        "Sick Leave",
+        "Annual Leave",
+        "Maternity Leave",
+        "Paternity Leave"
+    };
+
+
+    private async Task HandleSubmit()
+    {
+        await LeaveService.CreateAsync(leave);
+
+        NavigationManager.NavigateTo("/dashboard");
+    }
+
+
+    private void Cancel()
+    {
+        NavigationManager.NavigateTo("/dashboard");
+    }
+}

@@ -1,0 +1,75 @@
+﻿<div class="e-card mb-3">
+    <div class="e-card-content">
+
+        <h5 class="e-card-title">@Leave.EmployeeName</h5>
+        
+        <p>
+            <strong>Leave Type:</strong>
+            @Leave.LeaveType
+        </p>
+
+        <p>           
+            <strong>From:</strong>
+            @Leave.StartDate?.ToString("dd/MM/yyyy")
+        </p>
+
+        <p>
+            <strong>To:</strong>
+            @Leave.StartDate?.ToString("dd/MM/yyyy")
+        </p>
+
+        <p>
+            <strong>Reason:</strong>
+            @Leave.Reason
+        </p>
+
+        <p>
+            <strong>Status:</strong>
+            @Leave.Status
+        </p>
+
+        <SfButton CssClass="e-primary me-2"
+                  OnClick="HandleView">
+            View Details
+        </SfButton>
+
+        @if (Leave.Status == "Pending")
+        {
+            <SfButton CssClass="e-success me-2"
+                      OnClick="HandleApprove">
+                Approve
+            </SfButton>
+
+            <SfButton CssClass="e-danger"
+                      OnClick="HandleReject">
+                Reject
+            </SfButton>
+        }
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public LeaveRequest Leave { get; set; } = new();
+
+    [Parameter]
+    public EventCallback<int> OnView { get; set; }
+
+    [Parameter]
+    public EventCallback<string> OnStatusChange { get; set; }
+
+    private async Task HandleView()
+    {
+        await OnView.InvokeAsync(Leave.Id);
+    }
+
+    private async Task HandleApprove()
+    {
+        await OnStatusChange.InvokeAsync("Approved");
+    }
+
+    private async Task HandleReject()
+    {
+        await OnStatusChange.InvokeAsync("Rejected");
+    }
+}

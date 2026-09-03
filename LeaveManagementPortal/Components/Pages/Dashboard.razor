@@ -1,0 +1,186 @@
+﻿@page "/"
+@page "/dashboard"
+
+@rendermode InteractiveServer
+@inject LeaveService LeaveService
+@inject NavigationManager NavigationManager
+
+<div class="dashboard">
+
+    <!-- Header -->
+    <div class="dashboard-header">
+        <div>
+            <h2>Leave Dashboard</h2>
+            <p>Overview of employee leave requests</p>
+        </div>
+    </div>
+
+
+    @if (isLoading)
+    {
+        <p>Loading dashboard...</p>
+    }
+    else
+    {
+        <!-- Statistics -->
+        <div class="stats-container">
+
+            <div class="stat-card total">
+                <div class="stat-icon">
+                    📋
+                </div>
+
+                <div>
+                    <p>Total Leaves</p>
+                    <h2>@totalLeaves</h2>
+                </div>
+            </div>
+
+
+            <div class="stat-card pending">
+                <div class="stat-icon">
+                    ⏳
+                </div>
+
+                <div>
+                    <p>Pending</p>
+                    <h2>@pendingLeaves</h2>
+                </div>
+            </div>
+
+
+            <div class="stat-card approved">
+                <div class="stat-icon">
+                    ✓
+                </div>
+
+                <div>
+                    <p>Approved</p>
+                    <h2>@approvedLeaves</h2>
+                </div>
+            </div>
+
+
+            <div class="stat-card rejected">
+                <div class="stat-icon">
+                    ✕
+                </div>
+
+                <div>
+                    <p>Rejected</p>
+                    <h2>@rejectedLeaves</h2>
+                </div>
+            </div>
+
+        </div>
+
+
+        <!-- Quick Actions -->
+        <div class="section">
+
+            <h4>Quick Actions</h4>
+
+            <div class="quick-actions">
+
+                <div class="action-card"
+                     @onclick="ApplyLeave">
+
+                    <div class="action-icon">📝</div>
+
+                    <div>
+                        <h5>Apply for Leave</h5>
+                        <p>Submit a new leave request</p>
+                    </div>
+
+                </div>
+
+
+                <div class="action-card"
+                     @onclick="ViewLeaves">
+
+                    <div class="action-icon">📋</div>
+
+                    <div>
+                        <h5>View Leave Requests</h5>
+                        <p>View and manage requests</p>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Summary -->
+        <div class="section">
+
+            <h4>Leave Summary</h4>
+
+            <div class="summary-card">
+
+                <div class="summary-item">
+                    <span>Pending Requests</span>
+                    <strong>@pendingLeaves</strong>
+                </div>
+
+                <div class="summary-item">
+                    <span>Approved Requests</span>
+                    <strong>@approvedLeaves</strong>
+                </div>
+
+                <div class="summary-item">
+                    <span>Rejected Requests</span>
+                    <strong>@rejectedLeaves</strong>
+                </div>
+
+            </div>
+
+        </div>
+    }
+
+</div>
+
+
+@code
+{
+    private List<LeaveRequest> leaves = new();
+
+    private int totalLeaves;
+    private int pendingLeaves;
+    private int approvedLeaves;
+    private int rejectedLeaves;
+
+    private bool isLoading = true;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        leaves = await LeaveService.GetAllAsync();
+
+        totalLeaves = leaves.Count;
+
+        pendingLeaves = leaves.Count(x =>
+            x.Status.Equals("Pending", StringComparison.OrdinalIgnoreCase));
+
+        approvedLeaves = leaves.Count(x =>
+            x.Status.Equals("Approved", StringComparison.OrdinalIgnoreCase));
+
+        rejectedLeaves = leaves.Count(x =>
+            x.Status.Equals("Rejected", StringComparison.OrdinalIgnoreCase));
+
+        isLoading = false;
+    }
+
+
+    private void ApplyLeave()
+    {
+        NavigationManager.NavigateTo("/leaves/create");
+    }
+
+
+    private void ViewLeaves()
+    {
+        NavigationManager.NavigateTo("/leaves");
+    }
+}

@@ -1,0 +1,16 @@
+﻿/*.filter-section {
+    display: flex;
+    align-items: flex-end;
+    gap: 12px;
+    margin-bottom: 30px;
+}
+
+.filter-group {
+    width: 250px;
+}
+
+    .filter-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 600;
+    }*/
