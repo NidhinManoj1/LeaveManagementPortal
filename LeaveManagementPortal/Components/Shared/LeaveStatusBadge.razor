@@ -1,5 +1,19 @@
-﻿<h3>LeaveStatusBadge</h3>
+﻿<span class="status-badge @GetStatusClass()">
+    @Status
+</span>
 
 @code {
+    [Parameter]
+    public string? Status { get; set; }
 
+    private string GetStatusClass()
+    {
+        return Status?.ToLower() switch
+        {
+            "approved" => "approved",
+            "pending" => "pending",
+            "rejected" => "rejected",
+            _ => "default"
+        };
+    }
 }

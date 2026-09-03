@@ -1,43 +1,123 @@
 ﻿@page "/leaves/{id:int}"
 
+@rendermode InteractiveServer
+
 @inject LeaveService LeaveService
+@inject NavigationManager NavigationManager
 
-<h3>Leave Details</h3>
 
-@if (leave == null)
-{
-    <p>Loading...</p>
-}
-else
-{
-    <div class="e-card" style="max-width: 700px;">
-        <div class="e-card-header">
-            <div class="e-card-header-caption">
-                <div class="e-card-title">@leave.EmployeeName</div>
+<div class="leave-details-page">
+
+    @if (leave == null)
+    {
+        <div class="loading">
+            <p>Loading leave details...</p>
+        </div>
+    }
+    else
+    {
+        <!-- Back -->
+        <button class="back-button" @onclick="GoBack">
+            ← Back to Leave Requests
+        </button>
+
+        <!-- Header -->
+        <div class="details-header">
+
+            <div>
+                <h2>Leave Details</h2>
+                <p>View complete information about this leave request</p>
             </div>
-        </div>
 
-        <div class="e-card-content">
-
-            <SfGrid DataSource="@leaveDetails">
-                <GridColumns>
-
-                    <GridColumn Field="@nameof(LeaveDetail.Label)"
-                                HeaderText="Field"
-                                Width="200">
-                    </GridColumn>
-
-                    <GridColumn Field="@nameof(LeaveDetail.Value)"
-                                HeaderText="Details"
-                                Width="300">
-                    </GridColumn>
-
-                </GridColumns>
-            </SfGrid>
+            <span class="status-badge @GetStatusClass(leave.Status)">
+                @leave.Status
+            </span>
 
         </div>
-    </div>
-}
+
+
+        <!-- Employee Card -->
+        <div class="employee-card">
+
+            <div class="employee-avatar">
+                @GetInitials(leave.EmployeeName)
+            </div>
+
+            <div class="employee-info">
+                <h3>@leave.EmployeeName</h3>
+                <p>Employee Leave Request</p>
+            </div>
+
+        </div>
+
+
+        <!-- Leave Information -->
+        <div class="section-title">
+            <h3>Leave Information</h3>
+        </div>
+
+        <div class="info-grid">
+
+            <div class="info-card">
+                <span class="info-label">Leave Type</span>
+                <span class="info-value">@leave.LeaveType</span>
+            </div>
+
+            <div class="info-card">
+                <span class="info-label">Status</span>
+
+                <span class="status-badge @GetStatusClass(leave.Status)">
+                    @leave.Status
+                </span>
+            </div>
+
+            <div class="info-card">
+                <span class="info-label">Start Date</span>
+                <span class="info-value">
+                    @leave.StartDate?.ToString("dd MMM yyyy")
+                </span>
+            </div>
+
+            <div class="info-card">
+                <span class="info-label">End Date</span>
+                <span class="info-value">
+                    @leave.EndDate?.ToString("dd MMM yyyy")
+                </span>
+            </div>
+
+            <div class="info-card">
+                <span class="info-label">Created Date</span>
+                <span class="info-value">
+                    @leave.CreatedDate.ToString("dd MMM yyyy")
+                </span>
+            </div>
+
+        </div>
+
+
+        <!-- Reason -->
+        <div class="section-title">
+            <h3>Reason</h3>
+        </div>
+
+        <div class="reason-card">
+            <p>@leave.Reason</p>
+        </div>
+
+
+        <!-- Actions -->
+        <div class="details-actions">
+
+            <button class="secondary-button"
+                    @onclick="GoBack">
+                Close
+            </button>
+
+        </div>
+
+    }
+</div>
+
 
 @code
 {
@@ -46,29 +126,41 @@ else
 
     private LeaveRequest? leave;
 
-    private List<LeaveDetail> leaveDetails = new();
 
     protected override async Task OnInitializedAsync()
     {
         leave = await LeaveService.GetByIdAsync(id);
-
-        if (leave != null)
-        {
-            leaveDetails = new List<LeaveDetail>
-            {
-                new() { Label = "Leave Type", Value = leave.LeaveType },
-                new() { Label = "Start Date", Value = leave.StartDate?.ToShortDateString() ?? "" },
-                new() { Label = "End Date", Value = leave.EndDate?.ToShortDateString() ?? ""},
-                new() { Label = "Reason", Value = leave.Reason },
-                new() { Label = "Status", Value = leave.Status },
-                new() { Label = "Created Date", Value = leave.CreatedDate.ToShortDateString() }
-            };
-        }
     }
 
-    public class LeaveDetail
+
+    private void GoBack()
     {
-        public string Label { get; set; } = "";
-        public string Value { get; set; } = "";
+        NavigationManager.NavigateTo("/leaves");
+    }
+
+
+    private string GetInitials(string name)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+            return "?";
+
+        var parts = name.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+
+        if (parts.Length == 1)
+            return parts[0][0].ToString().ToUpper();
+
+        return $"{parts[0][0]}{parts[^1][0]}".ToUpper();
+    }
+
+
+    private string GetStatusClass(string status)
+    {
+        return status?.ToLower() switch
+        {
+            "approved" => "status-approved",
+            "rejected" => "status-rejected",
+            "pending" => "status-pending",
+            _ => "status-default"
+        };
     }
 }

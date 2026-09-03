@@ -23,10 +23,7 @@
             @Leave.Reason
         </p>
 
-        <p>
-            <strong>Status:</strong>
-            @Leave.Status
-        </p>
+        <LeaveStatusBadge Status="@Leave.Status" />
 
         <SfButton CssClass="e-primary me-2"
                   OnClick="HandleView">

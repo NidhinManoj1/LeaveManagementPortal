@@ -6,66 +6,188 @@
 
 <div class="leaves-page">
 
-    <!-- Page Header -->
-    <div class="page-header">
+    <!-- ================= PAGE HEADER ================= -->
 
-        <div>
-            <h2>Leave Requests</h2>
-            <p>View and manage employee leave requests</p>
+    <div class="leaves-header">
+
+        <div class="header-content">
+            <span class="page-eyebrow">LEAVE MANAGEMENT</span>
+
+            <h1>Leave Requests</h1>
+
+            <p>
+                View, track and manage employee leave requests.
+            </p>
         </div>
 
-        <SfButton CssClass="e-primary"
+        <SfButton CssClass="apply-leave-btn"
                   @onclick="ApplyLeave">
-            + Apply for Leave
+            <span>＋</span>
+            Apply for Leave
         </SfButton>
 
     </div>
 
 
-    <!-- Status Filter -->
-    <div class="filter-section">
+    <!-- ================= SUMMARY CARDS ================= -->
+    @if (leaves != null)
+    {
+        <div class="leave-summary">
 
-        <div class="filter-group">
+            <div class="summary-card total">
+                <div class="summary-icon">
+                    📋
+                </div>
 
-            <label>Status</label>
+                <div>
+                    <span>Total Requests</span>
+                    <h3>@leaves.Count</h3>
+                </div>
+            </div>
 
-            <SfDropDownList TValue="string"
-                            TItem="string"
-                            DataSource="@statusOptions"
-                            @bind-Value="selectedStatus"
-                            Placeholder="Select status">
-            </SfDropDownList>
+
+            <div class="summary-card pending">
+                <div class="summary-icon">
+                    ⏳
+                </div>
+
+                <div>
+                    <span>Pending</span>
+                    <h3>@leaves.Count(x => x.Status == "Pending")</h3>
+                </div>
+            </div>
+
+
+            <div class="summary-card approved">
+                <div class="summary-icon">
+                    ✓
+                </div>
+
+                <div>
+                    <span>Approved</span>
+                    <h3>@leaves.Count(x => x.Status == "Approved")</h3>
+                </div>
+            </div>
+
+
+            <div class="summary-card rejected">
+                <div class="summary-icon">
+                    ✕
+                </div>
+
+                <div>
+                    <span>Rejected</span>
+                    <h3>@leaves.Count(x => x.Status == "Rejected")</h3>
+                </div>
+            </div>
+
+        </div>
+    }
+
+
+    <!-- ================= FILTER ================= -->
+
+    <div class="filter-card">
+
+        <div class="filter-header">
+
+            <div>
+                <h4>Filter Requests</h4>
+                <p>Filter leave requests based on their current status.</p>
+            </div>
 
         </div>
 
-        <SfButton CssClass="e-primary"
-                  @onclick="ApplyFilter">
-            Filter
-        </SfButton>
 
-        <SfButton CssClass="e-flat"
-                  @onclick="ClearFilter">
-            Clear
-        </SfButton>
+        <div class="filter-content">
+
+            <div class="status-filter">
+
+                <label>Leave Status</label>
+
+                <SfDropDownList TValue="string"
+                                TItem="string"
+                                DataSource="@statusOptions"
+                                @bind-Value="selectedStatus"
+                                Placeholder="All Statuses"
+                                CssClass="status-dropdown">
+                </SfDropDownList>
+
+            </div>
+
+
+            <div class="filter-actions">
+
+                <SfButton CssClass="filter-btn"
+                          @onclick="ApplyFilter">
+                    Filter
+                </SfButton>
+
+
+                @if (!string.IsNullOrEmpty(selectedStatus))
+                {
+                    <SfButton CssClass="clear-btn"
+                              @onclick="ClearFilter">
+                        Clear
+                    </SfButton>
+                }
+
+            </div>
+
+        </div>
 
     </div>
 
 
+    <!-- ================= CONTENT ================= -->
     @if (leaves == null)
     {
-        <div class="loading">
-            Loading leave requests...
+        <div class="loading-state">
+
+            <div class="loading-spinner"></div>
+
+            <h4>Loading leave requests...</h4>
+
+            <p>Please wait while we retrieve the information.</p>
+
         </div>
     }
     else if (leaves.Count == 0)
     {
         <div class="empty-state">
-            <h4>No Leave Requests</h4>
-            <p>There are currently no leave requests.</p>
+
+            <div class="empty-icon">
+                📭
+            </div>
+
+            <h3>No Leave Requests Found</h3>
+
+            <p>
+                There are currently no leave requests matching your filter.
+            </p>
+
+            <SfButton CssClass="apply-leave-btn"
+                      @onclick="ApplyLeave">
+                + Apply for Leave
+            </SfButton>
+
         </div>
     }
     else
     {
+        <div class="requests-header">
+
+            <div>
+                <h3>Leave Requests</h3>
+
+                <span>
+                    Showing @leaves.Count request(s)
+                </span>
+            </div>
+
+        </div>
+
+
         <div class="leave-grid">
 
             @foreach (var leave in leaves)
@@ -96,7 +218,6 @@
     private string? selectedStatus;
 
 
-    // Gets ?status=... from the URL
     [SupplyParameterFromQuery(Name = "status")]
     public string? Status { get; set; }
 
@@ -136,6 +257,8 @@
 
     private void ClearFilter()
     {
+        selectedStatus = null;
+
         NavigationManager.NavigateTo("/leaves");
     }
 
@@ -150,7 +273,6 @@
     {
         await LeaveService.UpdateStatusAsync(id, status);
 
-        // Reload data while preserving current filter
         await OnParametersSetAsync();
     }
 
