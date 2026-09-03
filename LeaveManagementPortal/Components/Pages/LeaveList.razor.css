@@ -1,16 +1,350 @@
-﻿/*.filter-section {
+﻿/* ==========================================
+   MAIN PAGE
+========================================== */
+
+.leaves-page {
+    min-height: 100vh;
+    padding: 32px;
+    background: #f6f8fc;
+}
+
+
+/* ==========================================
+   HEADER
+========================================== */
+
+.leaves-header {
     display: flex;
-    align-items: flex-end;
-    gap: 12px;
-    margin-bottom: 30px;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 28px;
 }
 
-.filter-group {
-    width: 250px;
+.header-content h1 {
+    margin: 4px 0 8px;
+    font-size: 32px;
+    font-weight: 700;
+    color: #1f2937;
 }
 
-    .filter-group label {
+.header-content p {
+    margin: 0;
+    color: #6b7280;
+    font-size: 15px;
+}
+
+.page-eyebrow {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    color: #2563eb;
+}
+
+
+/* ==========================================
+   APPLY BUTTON
+========================================== */
+
+.apply-leave-btn {
+    border-radius: 8px !important;
+    padding: 10px 20px !important;
+    font-weight: 600 !important;
+    background: #2563eb !important;
+    border: none !important;
+    box-shadow: 0 6px 15px rgba(37, 99, 235, 0.18);
+}
+
+    .apply-leave-btn:hover {
+        background: #1d4ed8 !important;
+    }
+
+
+/* ==========================================
+   SUMMARY
+========================================== */
+
+.leave-summary {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+    margin-bottom: 26px;
+}
+
+
+.summary-card {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    border: 1px solid #e8ecf3;
+    transition: all 0.2s ease;
+}
+
+    .summary-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 24px rgba(0,0,0,0.06);
+    }
+
+
+.summary-icon {
+    width: 45px;
+    height: 45px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 19px;
+}
+
+
+.summary-card span {
+    display: block;
+    font-size: 13px;
+    color: #6b7280;
+}
+
+.summary-card h3 {
+    margin: 4px 0 0;
+    font-size: 24px;
+    color: #1f2937;
+}
+
+
+/* ICON BACKGROUNDS */
+
+.total .summary-icon {
+    background: #eff6ff;
+}
+
+.pending .summary-icon {
+    background: #fff7ed;
+}
+
+.approved .summary-icon {
+    background: #ecfdf5;
+}
+
+.rejected .summary-icon {
+    background: #fef2f2;
+}
+
+
+/* ==========================================
+   FILTER
+========================================== */
+
+.filter-card {
+    background: white;
+    border: 1px solid #e8ecf3;
+    border-radius: 12px;
+    padding: 22px;
+    margin-bottom: 28px;
+}
+
+.filter-header {
+    margin-bottom: 20px;
+}
+
+    .filter-header h4 {
+        margin: 0 0 5px;
+        color: #1f2937;
+        font-size: 17px;
+    }
+
+    .filter-header p {
+        margin: 0;
+        font-size: 13px;
+        color: #6b7280;
+    }
+
+
+.filter-content {
+    display: flex;
+    align-items: end;
+    gap: 16px;
+}
+
+
+.status-filter {
+    width: 280px;
+}
+
+    .status-filter label {
         display: block;
-        margin-bottom: 8px;
+        margin-bottom: 7px;
+        font-size: 13px;
         font-weight: 600;
-    }*/
+        color: #374151;
+    }
+
+
+.filter-actions {
+    display: flex;
+    gap: 10px;
+}
+
+
+.filter-btn {
+    background: #2563eb !important;
+    border: none !important;
+    border-radius: 7px !important;
+}
+
+
+.clear-btn {
+    border-radius: 7px !important;
+}
+
+
+/* ==========================================
+   REQUEST HEADER
+========================================== */
+
+.requests-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+    .requests-header h3 {
+        margin: 0 0 4px;
+        font-size: 20px;
+        color: #1f2937;
+    }
+
+    .requests-header span {
+        font-size: 13px;
+        color: #6b7280;
+    }
+
+
+/* ==========================================
+   LEAVE GRID
+========================================== */
+
+.leave-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+    gap: 20px;
+}
+
+
+/* ==========================================
+   LOADING
+========================================== */
+
+.loading-state {
+    min-height: 300px;
+    background: white;
+    border-radius: 12px;
+    border: 1px solid #e8ecf3;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+    .loading-state h4 {
+        margin: 15px 0 5px;
+    }
+
+    .loading-state p {
+        margin: 0;
+        color: #6b7280;
+    }
+
+
+.loading-spinner {
+    width: 35px;
+    height: 35px;
+    border: 4px solid #e5e7eb;
+    border-top-color: #2563eb;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+
+@keyframes spin {
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+
+/* ==========================================
+   EMPTY STATE
+========================================== */
+
+.empty-state {
+    background: white;
+    border: 1px solid #e8ecf3;
+    border-radius: 12px;
+    min-height: 350px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.empty-icon {
+    font-size: 45px;
+    margin-bottom: 12px;
+}
+
+.empty-state h3 {
+    margin-bottom: 8px;
+    color: #1f2937;
+}
+
+.empty-state p {
+    margin-bottom: 20px;
+    color: #6b7280;
+}
+
+
+/* ==========================================
+   RESPONSIVE
+========================================== */
+
+@media (max-width: 1000px) {
+
+    .leave-summary {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+
+@media (max-width: 768px) {
+
+    .leaves-page {
+        padding: 20px;
+    }
+
+    .leaves-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 18px;
+    }
+
+    .filter-content {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .status-filter {
+        width: 100%;
+    }
+
+    .leave-summary {
+        grid-template-columns: 1fr;
+    }
+
+    .leave-grid {
+        grid-template-columns: 1fr;
+    }
+}

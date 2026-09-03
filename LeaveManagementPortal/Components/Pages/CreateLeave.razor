@@ -146,12 +146,12 @@
     {
         await LeaveService.CreateAsync(leave);
 
-        NavigationManager.NavigateTo("/dashboard");
+        NavigationManager.NavigateTo("/leaves");
     }
 
 
     private void Cancel()
     {
-        NavigationManager.NavigateTo("/dashboard");
+        NavigationManager.NavigateTo("/leaves");
     }
 }
