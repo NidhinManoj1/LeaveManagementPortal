@@ -1,3 +1,8 @@
 <Solution>
+  <Project Path="LeaveManagementPortal.BusinessLayer/LeaveManagementPortal.BusinessLayer.csproj" />
+  <Project Path="LeaveManagementPortal.Common/LeaveManagementPortal.Common.csproj" />
+  <Project Path="LeaveManagementPortal.DataLayer/LeaveManagementPortal.DataLayer.csproj" />
+  <Project Path="LeaveManagementPortal.Model/LeaveManagementPortal.Model.csproj" />
+  <Project Path="LeaveManagementPortal.Tests/LeaveManagementPortal.Tests/LeaveManagementPortal.Tests.csproj" Id="6e2eac86-9062-473b-9fba-eaa89750a1c2" />
   <Project Path="LeaveManagementPortal/LeaveManagementPortal.csproj" />
 </Solution>

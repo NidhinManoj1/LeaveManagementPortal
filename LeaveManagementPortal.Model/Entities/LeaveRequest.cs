@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace LeaveManagementPortal.Models
+namespace LeaveManagementPortal.Model.Entities
 {
     public class LeaveRequest
     {

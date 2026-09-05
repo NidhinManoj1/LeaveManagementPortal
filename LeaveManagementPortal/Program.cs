@@ -1,6 +1,6 @@
+using LeaveManagementPortal.BusinessLayer.Services;
 using LeaveManagementPortal.Components;
-using LeaveManagementPortal.Repositories;
-using LeaveManagementPortal.Services;
+using LeaveManagementPortal.DataLayer.Repositories;
 using Syncfusion.Blazor;
 
 var builder = WebApplication.CreateBuilder(args);

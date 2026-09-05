@@ -1,9 +1,10 @@
 ﻿using Dapper;
-using LeaveManagementPortal.Models;
+using LeaveManagementPortal.Model.Entities;
 using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Configuration;
 using System.Data;
 
-namespace LeaveManagementPortal.Repositories
+namespace LeaveManagementPortal.DataLayer.Repositories
 {
     public class LeaveRepository : ILeaveRepository
     {

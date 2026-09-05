@@ -1,4 +1,5 @@
 ﻿@page "/leaves/create"
+
 @rendermode InteractiveServer
 
 @inject LeaveService LeaveService
@@ -16,7 +17,7 @@
     <div class="form-card">
 
         <EditForm Model="@leave"
-                  OnValidSubmit="@HandleSubmit">
+                  OnValidSubmit="@HandleSubmit" FormName="CreateLeaveForm">
 
             <DataAnnotationsValidator />
 
@@ -61,8 +62,9 @@
                     <label>Start Date</label>
 
                     <SfDatePicker TValue="DateTime?"
+                                  Min="@DateTime.Today"
                                   @bind-Value="leave.StartDate"
-                                  Placeholder="Select start date"
+                                  Placeholder="Select start date"                                 
                                   Format="dd/MM/yyyy">
                     </SfDatePicker>
 
@@ -76,6 +78,7 @@
                     <SfDatePicker TValue="DateTime?"
                                   @bind-Value="leave.EndDate"
                                   Placeholder="Select end date"
+                                  Min="@GetMinimumEndDate()"
                                   Format="dd/MM/yyyy">
                     </SfDatePicker>
 
@@ -154,4 +157,10 @@
     {
         NavigationManager.NavigateTo("/leaves");
     }
+
+    private DateTime GetMinimumEndDate()
+    {
+        return leave.StartDate ?? DateTime.Today;
+    }
+
 }
