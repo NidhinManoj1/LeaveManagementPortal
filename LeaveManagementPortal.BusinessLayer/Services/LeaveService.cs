@@ -1,4 +1,5 @@
-﻿using LeaveManagementPortal.DataLayer.Repositories;
+﻿using LeaveManagementPortal.Common.Enums;
+using LeaveManagementPortal.DataLayer.Repositories;
 using LeaveManagementPortal.Model.Entities;
 
 namespace LeaveManagementPortal.BusinessLayer.Services
@@ -27,7 +28,7 @@ namespace LeaveManagementPortal.BusinessLayer.Services
             return _repository.CreateAsync(leave);
         }
 
-        public Task UpdateStatusAsync(int id, string status)
+        public Task UpdateStatusAsync(int id, LeaveStatus status)
         {
             return _repository.UpdateStatusAsync(id, status);
         }

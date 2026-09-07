@@ -30,7 +30,7 @@
             View Details
         </SfButton>
 
-        @if (Leave.Status == "Pending")
+        @if (Leave.Status == LeaveStatus.Pending)
         {
             <SfButton CssClass="e-success me-2"
                       OnClick="HandleApprove">
@@ -53,7 +53,7 @@
     public EventCallback<int> OnView { get; set; }
 
     [Parameter]
-    public EventCallback<string> OnStatusChange { get; set; }
+    public EventCallback<LeaveStatus> OnStatusChange { get; set; }
 
     private async Task HandleView()
     {
@@ -62,11 +62,11 @@
 
     private async Task HandleApprove()
     {
-        await OnStatusChange.InvokeAsync("Approved");
+        await OnStatusChange.InvokeAsync(LeaveStatus.Approved);
     }
 
     private async Task HandleReject()
     {
-        await OnStatusChange.InvokeAsync("Rejected");
+        await OnStatusChange.InvokeAsync(LeaveStatus.Rejected);
     }
 }

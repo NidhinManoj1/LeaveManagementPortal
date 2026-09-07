@@ -4,15 +4,15 @@
 
 @code {
     [Parameter]
-    public string? Status { get; set; }
+    public LeaveStatus? Status { get; set; }
 
     private string GetStatusClass()
     {
-        return Status?.ToLower() switch
+        return Status switch
         {
-            "approved" => "approved",
-            "pending" => "pending",
-            "rejected" => "rejected",
+            LeaveStatus.Approved => "approved",
+            LeaveStatus.Pending => "pending",
+            LeaveStatus.Rejected => "rejected",
             _ => "default"
         };
     }

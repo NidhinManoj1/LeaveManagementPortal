@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using LeaveManagementPortal.Common.Enums;
 using LeaveManagementPortal.Model.Entities;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
@@ -73,14 +74,14 @@ namespace LeaveManagementPortal.DataLayer.Repositories
         }
 
 
-        public async Task UpdateStatusAsync(int id, string status)
+        public async Task UpdateStatusAsync(int id, LeaveStatus status)
         {
             using var connection = CreateConnection();
 
             var parameters = new DynamicParameters();
 
             parameters.Add("@Id", id);
-            parameters.Add("@Status", status);
+            parameters.Add("@Status", status.ToString());
 
             await connection.ExecuteAsync(
                 "UpdateLeaveStatus",

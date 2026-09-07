@@ -160,14 +160,11 @@
 
         totalLeaves = leaves.Count;
 
-        pendingLeaves = leaves.Count(x =>
-            x.Status.Equals("Pending", StringComparison.OrdinalIgnoreCase));
+        pendingLeaves = leaves.Count(x => x.Status == LeaveStatus.Pending);
 
-        approvedLeaves = leaves.Count(x =>
-            x.Status.Equals("Approved", StringComparison.OrdinalIgnoreCase));
+        approvedLeaves = leaves.Count(x => x.Status == LeaveStatus.Approved);
 
-        rejectedLeaves = leaves.Count(x =>
-            x.Status.Equals("Rejected", StringComparison.OrdinalIgnoreCase));
+        rejectedLeaves = leaves.Count(x => x.Status == LeaveStatus.Rejected);
 
         isLoading = false;
     }

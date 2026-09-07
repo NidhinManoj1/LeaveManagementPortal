@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using LeaveManagementPortal.Common.Enums;
+using System.ComponentModel.DataAnnotations;
 
 namespace LeaveManagementPortal.Model.Entities
 {
@@ -11,7 +12,7 @@ namespace LeaveManagementPortal.Model.Entities
         public string EmployeeName { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "Leave type is required.")]
-        public string LeaveType { get; set; } = string.Empty;
+        public LeaveType LeaveType { get; set; }
 
         [Required(ErrorMessage = "Start date is required.")]
         public DateTime? StartDate { get; set; }
@@ -23,7 +24,7 @@ namespace LeaveManagementPortal.Model.Entities
         [StringLength(500, ErrorMessage = "Reason cannot exceed 500 characters.")]
         public string Reason { get; set; } = string.Empty;
 
-        public string Status { get; set; } = string.Empty;
+        public LeaveStatus Status { get; set; }
 
         public DateTime CreatedDate { get; set; }
     }

@@ -47,8 +47,8 @@
                 EmployeeName = $"Employee {i}",
                 StartDate = DateTime.Today.AddDays(i),
                 EndDate = DateTime.Today.AddDays(i + 5),
-                LeaveType = i % 2 == 0 ? "Annual" : "Sick",
-                Status = i % 3 == 0 ? "Approved" : (i % 3 == 1 ? "Pending" : "Rejected")
+                LeaveType = i % 2 == 0 ? LeaveType.AnnualLeave : LeaveType.SickLeave,
+                Status = i % 3 == 0 ? LeaveStatus.Approved : (i % 3 == 1 ? LeaveStatus.Pending : LeaveStatus.Rejected)
             }).ToList();
     }
 }

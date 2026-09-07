@@ -1,4 +1,5 @@
-﻿using LeaveManagementPortal.Model.Entities;
+﻿using LeaveManagementPortal.Common.Enums;
+using LeaveManagementPortal.Model.Entities;
 
 namespace LeaveManagementPortal.DataLayer.Repositories
 {
@@ -10,6 +11,6 @@ namespace LeaveManagementPortal.DataLayer.Repositories
 
         Task CreateAsync(LeaveRequest leave);
 
-        Task UpdateStatusAsync(int id, string status);
+        Task UpdateStatusAsync(int id, LeaveStatus status);
     }
 }
