@@ -1,0 +1,54 @@
+﻿@page "/grid"
+@using Syncfusion.Blazor.Grids
+@rendermode InteractiveServer
+
+<SfGrid DataSource="@leaves" AllowPaging="true" AllowSorting="true" AllowFiltering="true" AllowGrouping="true">
+    <GridPageSettings PageSize="10" />
+    <GridColumns>
+
+        <GridColumn Field="@nameof(LeaveRequest.Id)"
+                    HeaderText="ID"
+                    Width="80" />
+
+        <GridColumn Field="@nameof(LeaveRequest.EmployeeName)"
+                    HeaderText="Employee"
+                    Width="150" />
+
+        <GridColumn Field="@nameof(LeaveRequest.StartDate)"
+                    HeaderText="Start Date"
+                    Format="dd/MM/yyyy"
+                    Width="130" />
+
+        <GridColumn Field="@nameof(LeaveRequest.EndDate)"
+                    HeaderText="End Date"
+                    Format="dd/MM/yyyy"
+                    Width="130" />
+
+        <GridColumn Field="@nameof(LeaveRequest.LeaveType)"
+                    HeaderText="Leave Type"
+                    Width="120" />
+
+        <GridColumn Field="@nameof(LeaveRequest.Status)"
+                    HeaderText="Status"
+                    Width="120" />
+
+    </GridColumns>
+</SfGrid>
+
+@code {
+
+    private List<LeaveRequest> leaves { get; set; }
+
+    protected override void OnInitialized()
+    {
+        leaves = Enumerable.Range(1, 100).Select(i => new LeaveRequest
+            {
+                Id = i,
+                EmployeeName = $"Employee {i}",
+                StartDate = DateTime.Today.AddDays(i),
+                EndDate = DateTime.Today.AddDays(i + 5),
+                LeaveType = i % 2 == 0 ? "Annual" : "Sick",
+                Status = i % 3 == 0 ? "Approved" : (i % 3 == 1 ? "Pending" : "Rejected")
+            }).ToList();
+    }
+}

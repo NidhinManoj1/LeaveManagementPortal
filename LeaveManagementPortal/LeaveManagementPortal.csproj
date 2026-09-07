@@ -8,10 +8,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Dapper" Version="2.1.79" />
-    <PackageReference Include="Microsoft.Data.SqlClient" Version="7.0.2" />
     <PackageReference Include="Syncfusion.Blazor.Grid" Version="34.2.6" />
     <PackageReference Include="Syncfusion.Blazor.Themes" Version="34.2.6" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\LeaveManagementPortal.BusinessLayer\LeaveManagementPortal.BusinessLayer.csproj" />
+    <ProjectReference Include="..\LeaveManagementPortal.Common\LeaveManagementPortal.Common.csproj" />
+    <ProjectReference Include="..\LeaveManagementPortal.Model\LeaveManagementPortal.Model.csproj" />
   </ItemGroup>
 
 </Project>

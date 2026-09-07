@@ -1,5 +1,6 @@
 ﻿@page "/leaves/{id:int}"
 
+
 @rendermode InteractiveServer
 
 @inject LeaveService LeaveService
@@ -150,7 +151,7 @@
 
     private string GetStatusClass(string status)
     {
-        return status?.ToLower() switch
+        return status?.ToLower()    switch
         {
             "approved" => "status-approved",
             "rejected" => "status-rejected",

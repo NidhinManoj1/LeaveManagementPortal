@@ -1,6 +1,6 @@
-﻿using LeaveManagementPortal.Models;
+﻿using LeaveManagementPortal.Model.Entities;
 
-namespace LeaveManagementPortal.Repositories
+namespace LeaveManagementPortal.DataLayer.Repositories
 {
     public interface ILeaveRepository
     {

@@ -1,7 +1,7 @@
-﻿using LeaveManagementPortal.Models;
-using LeaveManagementPortal.Repositories;
+﻿using LeaveManagementPortal.DataLayer.Repositories;
+using LeaveManagementPortal.Model.Entities;
 
-namespace LeaveManagementPortal.Services
+namespace LeaveManagementPortal.BusinessLayer.Services
 {
     public class LeaveService
     {
