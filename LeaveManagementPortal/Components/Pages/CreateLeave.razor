@@ -43,8 +43,8 @@
 
                 <label>Leave Type</label>
 
-                <SfDropDownList TValue="string"
-                                TItem="string"
+                <SfDropDownList TValue="LeaveType"
+                                TItem="LeaveType"
                                 DataSource="@leaveTypes"
                                 @bind-Value="leave.LeaveType"
                                 Placeholder="Select leave type">
@@ -135,13 +135,13 @@
     private LeaveRequest leave = new();
 
 
-    private List<string> leaveTypes = new()
-    {
-        "Casual Leave",
-        "Sick Leave",
-        "Annual Leave",
-        "Maternity Leave",
-        "Paternity Leave"
+    private List<LeaveType> leaveTypes = new()
+    {   
+        LeaveType.CasualLeave,
+        LeaveType.SickLeave,
+        LeaveType.AnnualLeave,
+        LeaveType.MaternityLeave,
+        LeaveType.PaternityLeave     
     };
 
 

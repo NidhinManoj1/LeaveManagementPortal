@@ -53,7 +53,7 @@
 
                 <div>
                     <span>Pending</span>
-                    <h3>@leaves.Count(x => x.Status == "Pending")</h3>
+                    <h3>@leaves.Count(x => x.Status == LeaveStatus.Pending)</h3>
                 </div>
             </div>
 
@@ -65,7 +65,7 @@
 
                 <div>
                     <span>Approved</span>
-                    <h3>@leaves.Count(x => x.Status == "Approved")</h3>
+                    <h3>@leaves.Count(x => x.Status == LeaveStatus.Approved)</h3>
                 </div>
             </div>
 
@@ -77,7 +77,7 @@
 
                 <div>
                     <span>Rejected</span>
-                    <h3>@leaves.Count(x => x.Status == "Rejected")</h3>
+                    <h3>@leaves.Count(x => x.Status == LeaveStatus.Rejected)</h3>
                 </div>
             </div>
 
@@ -105,8 +105,8 @@
 
                 <label>Leave Status</label>
 
-                <SfDropDownList TValue="string"
-                                TItem="string"
+                <SfDropDownList TValue="LeaveStatus?"
+                                TItem="LeaveStatus?"
                                 DataSource="@statusOptions"
                                 @bind-Value="selectedStatus"
                                 Placeholder="All Statuses"
@@ -124,7 +124,7 @@
                 </SfButton>
 
 
-                @if (!string.IsNullOrEmpty(selectedStatus))
+                @if (selectedStatus.HasValue)
                 {
                     <SfButton CssClass="clear-btn"
                               @onclick="ClearFilter">
@@ -208,14 +208,14 @@
 {
     private List<LeaveRequest>? leaves;
 
-    private List<string> statusOptions = new()
+    private List<LeaveStatus?> statusOptions = new()
     {
-        "Pending",
-        "Approved",
-        "Rejected"
+        LeaveStatus.Pending,
+        LeaveStatus.Approved,
+        LeaveStatus.Rejected     
     };
 
-    private string? selectedStatus;
+    private LeaveStatus? selectedStatus;
 
 
     [SupplyParameterFromQuery(Name = "status")]
@@ -226,31 +226,31 @@
     {
         var allLeaves = await LeaveService.GetAllAsync();
 
-        selectedStatus = Status;
-
-        if (string.IsNullOrEmpty(Status))
+        if (!Enum.TryParse<LeaveStatus>(Status, true, out var parsedStatus))
         {
+            selectedStatus = null;
             leaves = allLeaves;
+            return;
         }
-        else
-        {
-            leaves = allLeaves
-                .Where(x => x.Status == Status)
-                .ToList();
-        }
+
+        selectedStatus = parsedStatus;
+
+        leaves = allLeaves
+            .Where(x => x.Status == parsedStatus)
+            .ToList();
     }
 
 
     private void ApplyFilter()
     {
-        if (string.IsNullOrEmpty(selectedStatus))
+        if (!selectedStatus.HasValue)
         {
             NavigationManager.NavigateTo("/leaves");
         }
         else
         {
             NavigationManager.NavigateTo(
-                $"/leaves?status={Uri.EscapeDataString(selectedStatus)}");
+                $"/leaves?status={Uri.EscapeDataString(selectedStatus.Value.ToString())}");
         }
     }
 
@@ -269,7 +269,7 @@
     }
 
 
-    private async Task HandleStatusChange(int id, string status)
+    private async Task HandleStatusChange(int id, LeaveStatus status)
     {
         await LeaveService.UpdateStatusAsync(id, status);
 

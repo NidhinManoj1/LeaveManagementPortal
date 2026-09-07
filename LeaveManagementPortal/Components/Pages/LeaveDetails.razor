@@ -149,13 +149,13 @@
     }
 
 
-    private string GetStatusClass(string status)
+    private string GetStatusClass(LeaveStatus status)
     {
-        return status?.ToLower()    switch
+        return status switch
         {
-            "approved" => "status-approved",
-            "rejected" => "status-rejected",
-            "pending" => "status-pending",
+            LeaveStatus.Approved => "status-approved",
+            LeaveStatus.Rejected => "status-rejected",
+            LeaveStatus.Pending => "status-pending",
             _ => "status-default"
         };
     }
