@@ -1,0 +1,40 @@
+﻿@page "/user-info"
+
+@using Microsoft.AspNetCore.Components.Authorization
+@using System.Security.Claims
+
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+<h3>User Information</h3>
+
+@if (user is not null)
+{
+    <p>
+        Name:
+        @user.Identity?.Name
+    </p>
+
+    <p>
+        Authenticated:
+        @user.Identity?.IsAuthenticated
+    </p>
+
+    <p>
+        Role:
+        @user.FindFirst(ClaimTypes.Role)?.Value
+    </p>
+}
+
+@code {
+
+    private ClaimsPrincipal? user;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState =
+            await AuthenticationStateProvider
+                .GetAuthenticationStateAsync();
+
+        user = authState.User;
+    }
+}

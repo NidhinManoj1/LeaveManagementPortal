@@ -61,7 +61,7 @@ namespace LeaveManagementPortal.DataLayer.Repositories
             var parameters = new DynamicParameters();
 
             parameters.Add("@EmployeeName", leave.EmployeeName);
-            parameters.Add("@LeaveType", leave.LeaveType);
+            parameters.Add("@LeaveType", leave.LeaveType.ToString());
             parameters.Add("@StartDate", leave.StartDate);
             parameters.Add("@EndDate", leave.EndDate);
             parameters.Add("@Reason", leave.Reason);
