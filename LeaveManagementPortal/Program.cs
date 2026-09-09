@@ -1,6 +1,8 @@
+using LeaveManagementPortal.Authentication;
 using LeaveManagementPortal.BusinessLayer.Services;
 using LeaveManagementPortal.Components;
 using LeaveManagementPortal.DataLayer.Repositories;
+using Microsoft.AspNetCore.Components.Authorization;
 using Syncfusion.Blazor;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,6 +13,10 @@ builder.Services.AddRazorComponents()
 builder.Services.AddSyncfusionBlazor();
 builder.Services.AddScoped<ILeaveRepository, LeaveRepository>();
 builder.Services.AddScoped<LeaveService>();
+builder.Services.AddAuthorizationCore();
+builder.Services.AddScoped<
+    AuthenticationStateProvider,
+    CustomAuthenticationStateProvider>();
 
 var app = builder.Build();
 
