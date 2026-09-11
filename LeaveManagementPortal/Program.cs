@@ -1,12 +1,23 @@
-using LeaveManagementPortal.Authentication;
 using LeaveManagementPortal.BusinessLayer.Services;
 using LeaveManagementPortal.Components;
 using LeaveManagementPortal.DataLayer.Repositories;
-using Microsoft.AspNetCore.Components.Authorization;
+using Serilog;
 using Syncfusion.Blazor;
+
+Log.Logger = new LoggerConfiguration()
+    .MinimumLevel.Information()
+    .WriteTo.Console()
+    .WriteTo.File(
+        "Logs/app-.log",
+        rollingInterval: RollingInterval.Day,
+        retainedFileCountLimit: 7,
+        fileSizeLimitBytes: 10_000_000,
+        rollOnFileSizeLimit: true)
+    .CreateLogger();
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Host.UseSerilog();
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
@@ -14,9 +25,6 @@ builder.Services.AddSyncfusionBlazor();
 builder.Services.AddScoped<ILeaveRepository, LeaveRepository>();
 builder.Services.AddScoped<LeaveService>();
 builder.Services.AddAuthorizationCore();
-builder.Services.AddScoped<
-    AuthenticationStateProvider,
-    CustomAuthenticationStateProvider>();
 
 var app = builder.Build();
 
