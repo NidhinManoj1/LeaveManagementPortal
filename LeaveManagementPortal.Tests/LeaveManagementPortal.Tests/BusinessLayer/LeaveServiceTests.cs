@@ -18,11 +18,10 @@ namespace LeaveManagementPortal.Tests.BusinessLayer
             _mockRepository = new Mock<ILeaveRepository>();
             _leaveService = new LeaveService(_mockRepository.Object);
         }
-
         [Test]
         public async Task GetAllAsync_ShouldReturnAllLeaveRequests()
         {
-            //Arrange
+            // Arrange
             var leaves = new List<LeaveRequest>
             {
                 new LeaveRequest(),
@@ -31,11 +30,10 @@ namespace LeaveManagementPortal.Tests.BusinessLayer
 
             _mockRepository.Setup(r => r.GetAllAsync()).ReturnsAsync(leaves);
 
-            //Act
+            // Act
             var result = await _leaveService.GetAllAsync();
 
-
-            //Assert
+            // Assert
             Assert.That(result, Is.EqualTo(leaves));
             _mockRepository.Verify(r => r.GetAllAsync(), Times.Once);
         }
@@ -48,73 +46,69 @@ namespace LeaveManagementPortal.Tests.BusinessLayer
 
             var leave = new LeaveRequest();
 
-            _mockRepository
-                .Setup(r => r.GetByIdAsync(id))
-                .ReturnsAsync(leave);
+            _mockRepository.Setup(r => r.GetByIdAsync(id)).ReturnsAsync(leave);
 
             // Act
             var result = await _leaveService.GetByIdAsync(id);
 
             // Assert
             Assert.That(result, Is.EqualTo(leave));
-
-            _mockRepository.Verify(r => r.GetByIdAsync(id),Times.Once);
+            _mockRepository.Verify(r => r.GetByIdAsync(id), Times.Once);
         }
 
         [Test]
         public async Task CreateAsync_ShouldCallRepositoryCreate()
         {
-            //Arrange
+            // Arrange
             var leave = new LeaveRequest()
             {
                 Id = 1,
                 EmployeeName = "Nidhin Manoj",
                 LeaveType = LeaveType.SickLeave,
-                StartDate = new DateTime(2026, 09, 29),
-                EndDate = new DateTime(2026, 09, 29),
+                StartDate = new DateTime(2026, 9, 29),
+                EndDate = new DateTime(2026, 9, 29),
                 Reason = "Personal Reasons",
                 Status = LeaveStatus.Pending,
                 CreatedDate = DateTime.Now
             };
+
             _mockRepository.Setup(r => r.CreateAsync(leave)).Returns(Task.CompletedTask);
 
-            //Act
+            // Act
             await _leaveService.CreateAsync(leave);
 
-            //Assert
+            // Assert
             _mockRepository.Verify(r => r.CreateAsync(leave), Times.Once);
         }
-
 
         [Test]
         public async Task UpdateStatusAsync_ShouldCallRepositoryUpdateStatus()
         {
-            //Arrange
+            // Arrange
             int id = 1;
             LeaveStatus status = LeaveStatus.Approved;
 
             _mockRepository.Setup(r => r.UpdateStatusAsync(id, status)).Returns(Task.CompletedTask);
 
-            //Act
+            // Act
             await _leaveService.UpdateStatusAsync(id, status);
 
+            // Assert
             _mockRepository.Verify(r => r.UpdateStatusAsync(id, status), Times.Once);
         }
 
         [Test]
         public async Task GetByIdAsync_WhenLeaveDoesNotExist_ShouldReturnNull()
         {
-            //Arrange
+            // Arrange
             int id = 999;
 
-            _mockRepository
-                .Setup(r => r.GetByIdAsync(id))
-                .ReturnsAsync((LeaveRequest?)null);
+            _mockRepository.Setup(r => r.GetByIdAsync(id)).ReturnsAsync((LeaveRequest?)null);
 
-            //Act
+            // Act
             var result = await _leaveService.GetByIdAsync(id);
 
-            //Assert
+            // Assert
             Assert.That(result, Is.Null);
         }
     }

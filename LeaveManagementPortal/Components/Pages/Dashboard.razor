@@ -4,6 +4,7 @@
 @rendermode InteractiveServer
 @inject LeaveService LeaveService
 @inject NavigationManager NavigationManager
+@inject ILogger<Dashboard> Logger
 
 <div class="dashboard">
 
@@ -19,6 +20,12 @@
     @if (isLoading)
     {
         <p>Loading dashboard...</p>
+    }
+    else if(!string.IsNullOrEmpty(errorMessage))
+    {
+        <div class="alert alert-danger"> 
+            @errorMessage
+            </div>        
     }
     else
     {
@@ -149,24 +156,38 @@
     private int totalLeaves;
     private int pendingLeaves;
     private int approvedLeaves;
-    private int rejectedLeaves;
+    private int rejectedLeaves;    
 
     private bool isLoading = true;
 
+    private string? errorMessage;
 
     protected override async Task OnInitializedAsync()
     {
-        leaves = await LeaveService.GetAllAsync();
+        try
+        {
+            leaves = await LeaveService.GetAllAsync();
 
-        totalLeaves = leaves.Count;
+            totalLeaves = leaves.Count;
 
-        pendingLeaves = leaves.Count(x => x.Status == LeaveStatus.Pending);
+            pendingLeaves = leaves.Count(x => x.Status == LeaveStatus.Pending);
 
-        approvedLeaves = leaves.Count(x => x.Status == LeaveStatus.Approved);
+            approvedLeaves = leaves.Count(x => x.Status == LeaveStatus.Approved);
 
-        rejectedLeaves = leaves.Count(x => x.Status == LeaveStatus.Rejected);
-
-        isLoading = false;
+            rejectedLeaves = leaves.Count(x => x.Status == LeaveStatus.Rejected);
+            
+        }
+        catch (Exception ex)
+        {
+            // Handle exceptions (e.g., log the error, show a message to the user)
+            //Console.Error.WriteLine($"Error fetching leave data: {ex.Message}");
+            Logger.LogError("Error occurred while loading the leave dashboard. Exception: {Message}", ex.Message);
+            errorMessage = "An error occurred while loading the dashboard. Please try again later.";
+        }
+        finally
+        {
+            isLoading = false;
+        }      
     }
 
 
